@@ -646,11 +646,12 @@ def _update_config_file(
         )
 
         config.write(new_config)
-        logger.info(new_config.getvalue())
+        config_text = new_config.getvalue().replace("= %s" % config_newlines, "=%s" % config_newlines)
+        logger.info(config_text)
 
         if write_to_config_file:
             with open(config_file, "wt", encoding="utf-8", newline=config_newlines) as f:
-                f.write(new_config.getvalue().strip() + "\n")
+                f.write(config_text.strip() + config_newlines)
 
     except UnicodeEncodeError:
         warnings.warn(
